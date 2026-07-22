@@ -1,0 +1,26 @@
+name: Deploy to Production
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '4.7'
+    - name: Restore
+      run: dotnet restore
+    - name: Build Release
+      run: dotnet build --no-restore --configuration Release
+    - name: Publish
+      run: dotnet publish --no-build --configuration Release --output ./publish
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: published-app
+        path: ./publish/
+        retention-days: 30

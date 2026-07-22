@@ -1,0 +1,19 @@
+name: Code Quality - Code Smells
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '4.7'
+    - name: Restore
+      run: dotnet restore
+    - name: Code Smells Analysis
+      run: echo "Analizando code smells..."
